@@ -13,35 +13,26 @@
 # ansible-playbook -i hosts.example -k ansible-ibm-websphere/playbooks/was-create-dmgr-profile.yml
 #
 
-[dmgr]
-was-srv1.company.com was_nodename=was-srv1Node
+[domino-servers]
+domserver01.company.com
+domserver02.company.com
+domserver03.company.com
 
-[was-servers]
-was-srv2.company.com was_nodename=was-srv2Node
-was-srv3.company.com was_nodename=was-srv3Node
-was-srv4.company.com was_nodename=was-srv4Node
-was-srv5.company.com was_nodename=was-srv5Node
 
-[dmgr:vars]
-iim_repository_url=http://192.168.1.1/installation
-was_repository_url=http://192.168.1.1/was/8.5.5
-was_fixes_repository_url=http://192.168.1.1/was/8.5.5
-was_username=wsadmin
-was_password=<PASSWORD>
-was_cellname=ProductionCell
-ldap_server=ldap_prod.company.com
-ldap_alias=ldap_prod
-ldap_repo=LDAP_PROD
-ldap_bind_user=uid=mybinduser,o=company
-ldap_bind_pass=<PASSWORD>
-ldap_realm=o=company
 
-[was-servers:vars]
-iim_repository_url=http://192.168.1.1/installation
-was_repository_url=http://192.168.1.1/was/8.5.5
-was_fixes_repository_url=http://192.168.1.1/was/8.5.5
-#was_version="8.5.5009.20160225_0435"
-was_username=wsadmin
-was_password=<PASSWORD>
-profile_name=AppSrv01
-dmgr_hostname=was-srv1.company.com
+[all:vars]
+domino_install_location=/opt/IBM/domino
+#
+domino_repository_url=http://192.168.1.1/domino/9.x/
+domino_version=90010
+domino_bin_file=DOMINO_9.0.1_64_BIT_LIN_XS_EN.tar
+domino_bin_file_sha256=9f5f941ec43ca268197cb1250a2677630789a4efeca73d38d69ebecd7d32870a
+#
+domino_fp_repository_url=http://192.168.1.1/domino/9.x/
+domino_fp_version=901FP10
+domino_fp_bin_file=domino901FP10_linux64_x86.tar
+domino_fp_bin_file_sha256=d0575e4be7d2c78d0b557c99db8bf08e754c52128e076a3ad1a46e85b7f8f2c0
+#
+#domino_fp_version=901FP9"
+#domino_fp_bin_file=domino901FP9_linux64_x86.tar"
+#domino_fp_bin_file_sha256=25020ea0640dbf9b8cd98c7ef82a5019e93a86cdc64d27f3ae15d277957bd306

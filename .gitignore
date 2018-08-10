@@ -1,0 +1,11 @@
+environments/hosts.*
+*.retry
+playbooks/ibm-traveler-complete.yml
+roles/domino-lp-install
+roles/verse-install
+roles/traveler-install
+roles/domino-server-stop
+roles/domino-server-start
+roles/domino-setup
+roles/domino-config-rc_domino
+
