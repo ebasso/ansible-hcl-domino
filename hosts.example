@@ -10,7 +10,7 @@
 #
 # How to run:
 #
-# ansible-playbook -i hosts.example -k ansible-ibm-websphere/playbooks/was-create-dmgr-profile.yml
+# ansible-playbook -i hosts.example -u <username> -k playbooks/ibm-domino-complete.yml
 #
 
 [domino-servers]
