@@ -1,0 +1,72 @@
+---
+- name:                "Is First Domino Setup?"
+  stat:
+    path:              "{{ __dom_install_location }}"
+  register:            domino_already_exists
+
+- name:                Is Product already Installed?
+  command:             "egrep 'target_version = \"' {{ __dom_install_location }}/.install.dat"
+  register:            __cout
+  ignore_errors:       true
+
+- name:                Is Product already Installed 2?
+  command:             "egrep 'rev = ' {{ __dom_install_location }}/.install.dat"
+  register:            __cout2
+  ignore_errors:       true
+  when:                __cout.rc == 1
+
+- name:                Install Domino 10.0.1FP2?
+  set_fact:
+    __bin_file:        "domino10001FP2_linux64.tar"
+    __bin_file_sha256: "f3573d3f084836a923271967c07a402ce3f3d1f3830dc7a029fa6db6d70c9135"
+  when:                ( __this_version == '10.0.1FP2' )
+
+- name:                Install Domino 10.0.1FP1?
+  set_fact:
+    __bin_file:        "DOM_SVR_V10.0.1_FP1_64B_LINUX_EN.tar"
+    __bin_file_sha256: "6f6209bd14814001d52cc3b0af734a3ead119e9f4e97341bf2ebaa3505550aa8"
+  when:                ( __this_version == '10.0.1FP1' )
+
+- name:                Install Domino 9.0.1FP10?
+  set_fact:
+    __bin_file:        "domino901FP10_linux64_x86.tar"
+    __bin_file_sha256: "25020ea0640dbf9b8cd98c7ef82a5019e93a86cdc64d27f3ae15d277957bd306"
+  when:                ( __this_version == '9.0.1FP10' )
+
+- name:                Install Domino 9.0.1FP9?
+  set_fact:
+    __bin_file:        "domino901FP9_linux64_x86.tar"
+    __bin_file_sha256: "25020ea0640dbf9b8cd98c7ef82a5019e93a86cdc64d27f3ae15d277957bd306"
+  when:                ( __this_version == '9.0.1FP9' )
+
+# return code 0 when string found
+#TODO:                 Change this for Domino v10
+- set_fact:
+    __release_str:     "{{ __cout2.stdout | regex_replace('.*(\\d3)\\d2.*','\\1')  }}"
+  when:                (__cout.rc == 1) and (__cout2.rc == 0)
+
+- set_fact:
+    __release_str:     "{{ __cout.stdout | regex_replace('.*\"(\\d*)FP.*','\\1')  }}"
+    __fp_str:          "{{ __cout.stdout | regex_replace('.*FP(\\d*).*','\\1')  }}"
+  when:                __cout.stdout is search("FP")
+
+- set_fact:
+    __hf_str:          "{{ __cout.stdout | regex_replace('.*HF(\\d*)\".*','\\1')  }}"
+  when:                __cout.stdout is search("HF")
+
+#TODO:                 Ansible not convert to int because Jinja2
+- set_fact:
+    __release:         "{{ __release_str | int }}"
+    __fp:              "{{ __fp_str | int }}"
+    __hf:              "{{ __hf_str | int }}"
+
+
+- debug:               var=__release
+- debug:               var=__fp
+- debug:               var=__hf
+
+- debug:               var=__cout
+- debug:               var=__cout2
+
+
+- debug:               var=__this_version[0:3]

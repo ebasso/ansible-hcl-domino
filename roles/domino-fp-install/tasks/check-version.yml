@@ -11,7 +11,7 @@
   when:            __cout.rc == 1
 
 # return code 0 when string found
-#TODO: Change this for Domino v10
+#TODO:             Change this for Domino v10
 - set_fact:
     __release_str: "{{ __cout2.stdout | regex_replace('.*(\\d3)\\d2.*','\\1')  }}"
   when:            (__cout.rc == 1) and (__cout2.rc == 0)
@@ -25,7 +25,7 @@
     __hf_str:      "{{ __cout.stdout | regex_replace('.*HF(\\d*)\".*','\\1')  }}"
   when:            __cout.stdout is search("HF")
 
-#TODO: Ansible not convert to int because Jinja2
+#TODO:             Ansible not convert to int because Jinja2
 - set_fact:
     __release:     "{{ __release_str | int }}"
     __fp:          "{{ __fp_str | int }}"

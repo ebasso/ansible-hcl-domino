@@ -1,12 +1,31 @@
 ---
-- include:            check-version.yml
+- name:          Check Vars
+  include_tasks: check_vars.yml
 
-#TODO: Change this for Domino v10
-- include:            config-os.yml
-  when:               __release < __this_version[0:3]
+- name:          Define Vars
+  include_tasks: define_vars.yml
 
-#- include:            domino-server-stop
-#  when:               __release < __this_version[0:3]
+- name:          Setup OS
+  include_tasks: setup_os.yml
+  when:          first_time_setup.stat.exists != true
 
-- include:            inst-domino.yml
-  when:               __release < __this_version[0:3]
+#- include:      domino-server-stop
+#  when:          first_time_setup.stat.exists != true
+#  when:         __release < __this_version[0:3]
+
+- include:       install_domino.yml
+  when:          __release < __this_version[0:3]
+  #when:         version_already_installed.rc != 0
+
+#- name:         Script already configured?
+#  command:      "egrep \"{{ __dom_user }}\" /etc/sysconfig/rc_domino_config_{{ __dom_user }}"
+#  register:     startscript_configured
+#  ignore_errors: true
+#
+#- name:         Configure Startup Script
+#  include_tasks: config_startscript.yml
+#  when:         startscript_configured.rc != 0
+
+#chkconfig --add rc_domino
+
+#-  debug:       var=version_already_installed

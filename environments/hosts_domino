@@ -1,0 +1,29 @@
+# How to run
+#
+# ansible-playbook -i environments/hosts_domino -u <USERNAME> -k playbooks/ibm-domino-complete.yml
+#
+
+[domino_servers]
+srv001.company.com
+srv002.company.com
+srv003.company.com
+
+[traveler_servers]
+
+# Nginx reverse proxies
+[nginx4domino_servers]
+
+# Nginx reverse proxies
+[nginx4traveler_servers]
+
+
+[all:vars]
+domino_notesdata=/local/notesdata
+domino_repository_url=http://192.168.0.1/
+domino_fp_repository_url=http://192.168.0.1/
+domino_hf_repository_url=http://192.168.0.1/
+verse_repository_url=http://192.168.0.1/
+domino_version=10.0.1
+domino_fp=FP2
+domino_hf=HF10
+verse_version=1.0.7

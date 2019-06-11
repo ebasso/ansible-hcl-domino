@@ -20,15 +20,44 @@ Ansible playbooks for IBM Domino, Traveler, ...
 
 1) Download installation files:
 
-* IBM Domino 9.0.1
-* IBM Domino 9.0.1 FP10
-* IBM Domino 9.0.1 FP10 HF XX
+* IBM Domino 10.0.1
+* IBM Domino 10.0.1 FP2
+* IBM Domino 10.0.1 FP2 HF XX
 
 2) Copy files to Web Server
 
-## Configure Ansible hosts file
+Example of my repository
+```
 
-3) Change you ansible host file like **hosts.example**
+-- domino
+    |-- 10.0.1
+    |   |-- DOM_SVR_V10.0.1_64_BIT_Lnx.tar
+    |   |-- FP1
+    |   |   |-- domino10001FP1_linux64.tar
+    |   |   `-- 10.0.1FP1HF12.tar
+    |   |-- FP2
+    |   |   `-- domino10001FP2_linux64.tar
+    |-- 9.0.1
+    |   |-- DOMINO_9.0.1_64_BIT_LIN_XS_EN.tar
+    |   |-- FP9
+    |   |   |-- domino901FP9_linux64_x86.tar
+    |   |   `-- 901FP9HF321.tar
+    |   |-- FP10
+    |   |   |-- domino901FP10_linux64_x86.tar
+    |   |   `-- 9.0.1FP10HF541.tar
+
+```
+
+
+## Install ansible on your ansible manager machine.
+
+* You can do: 
+```
+pip install ansible
+```
+
+* Setup ssh access from master to workers.
+```ssh-copy-id -i ~/.ssh/id_rsa.pub <user@host>```
 
 
 ## Cloning ansible-ibm-websphere from git
@@ -37,7 +66,14 @@ Ansible playbooks for IBM Domino, Traveler, ...
 cd /etc/ansible
 
 git clone https://github.com/ebasso/ansible-ibm-domino.git
+
+cd ansible-ibm-domino
 ```
+
+## Configure Ansible hosts file
+
+Change you ansible host file like **hosts_domino**
+
 
 ## Running playbooks
 

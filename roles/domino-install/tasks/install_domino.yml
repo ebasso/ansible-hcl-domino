@@ -9,35 +9,46 @@
 - name:          Create Logs directory
   file:          path={{ __logs_dir }} state=directory mode=0755
 
-- name:          Download Domino Fix Pack
+- name:          Download IBM Domino
   get_url:
     url:         "{{ __repository_url }}/{{ __bin_file }}"
     dest:        "{{ __tmp_dir }}/{{ __bin_file }}"
     mode:        0755
     checksum:    sha256:{{ __bin_file_sha256 }}
 
-- name:          Extract Domino Fix Pack
+- name:          Extract IBM Domino
   unarchive:
     src:         "{{ __tmp_dir }}/{{ __bin_file }}"
     dest:        "{{ __tmp_dir }}/"
     copy:        no
     creates:     "{{ __tmp_dir }}/{{ __os }}/domino/install"
 
-- name:          Generate Domino FP Install Response file
+- name:          Generate Domino Install Response file
   template:
-    src:         "{{ __tpl_file }}"
+    src:         domino_install.rsp.j2
     dest:        "{{ __rsp_file }}"
 
-- name:          Install IBM Domino Fix Pack
+- name:          "Install IBM Domino Software -- This takes a while ..."
   shell:
-    "{{ __tmp_dir }}/{{ __os }}/domino/install -script {{ __rsp_file }}"
+    "{{ __tmp_dir }}/{{ __os }}/domino/install -silent -options {{ __rsp_file }}"
   args:
     chdir:       "{{ __tmp_dir }}/{{ __os }}/domino"
-  environment:
-    NUI_NOTESDIR: "{{ __dom_install_location }}"
-#    creates:     "{{ __dom_install_location }}/bin/server"
+    creates:     "{{ __dom_install_location }}/bin/server"
 
-#- debug:                msg={{ cout }}
+#export Notes_ExecDirectory=$LOTUS/notes/latest/linux
+#DOM_STRING_OK="Dominoserver Installation successful"
+#INST_DOM_LOG=/local/install_domino.log
+#mv "$Notes_ExecDirectory/DominoInstall.log" "$INST_DOM_LOG"
+#
+#   check_file_str "$INST_DOM_LOG" "$DOM_STRING_OK"
+#
+#  if [ -e "$CURRENT_FILE" ]; then
+#    CURRENT_RESULT=`grep "$CURRENT_STRING" "$CURRENT_FILE" ` 
+#
+#    if [ -z "$CURRENT_RESULT" ]; then
+#      return 0
+#    else
+#      return 1
 
 - name:          Cleanup Binaries directory
   file:          path={{ __tmp_dir }} state=absent

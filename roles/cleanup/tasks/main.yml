@@ -1,0 +1,12 @@
+- name: cleanup domino directories
+  shell: |
+    rm -fr /domino/notesdata/*
+    rm -fr /opt/ibm/domino
+    rm -fr /opt/lotus/domino
+    rm /etc/sysconfig/rc_domino_config
+    rm /etc/sysconfig/rc_domino_config_{{ __dom_user }}
+
+- name: delete notes user
+  shell: |
+    userdel notes
+    groupdel notes

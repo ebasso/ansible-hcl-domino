@@ -1,0 +1,48 @@
+---
+#- debug:             msg="{{ ansible_distribution }}"
+#- debug:             msg="{{ ansible_distribution_version }}"
+- name:               Enable systemd?
+  set_fact:
+    __enable_systemd: "DOMINO_SYSTEMD_NAME=domino.service"
+  when:               ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")) and (ansible_distribution_version > 7)
+
+- name:               Copy configuration files
+  template:
+    src:              "{{ item.src }}"
+    dest:             "{{ item.dest }}"
+    mode:             "{{ item.mode }}"
+  with_items:
+    - { src: "rc_domino.j2", dest: "/etc/init.d/rc_domino", mode: "0755" }
+    - { src: "rc_domino_script", dest: "{{ __dom_install_location }}/rc_domino_script", mode: "0755" }
+    - { src: "rc_domino_config_notes.j2", dest: "/etc/sysconfig/rc_domino_config_{{ __dom_user }}", mode: "0644" }
+
+- name:               Copy configuration files for systemd
+  template:
+    src:              "{{ item.src }}"
+    dest:             "{{ item.dest }}"
+    mode:             "{{ item.mode }}"
+  with_items:
+    - { src: "domino.service.j2", dest: "/etc/systemd/system/domino.service", mode: "0755" }
+  when:               ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")) and (ansible_distribution_version > 7)
+
+
+
+#RH7 CENTOS SLES12
+
+#systemctl enable domino.service
+#systemctl disable domino.service
+
+#chkconfig --add rc_domino
+
+#status
+#Checks if the Domino server is running and prints a message.
+#Return code of the script:
+# 0 = server is not running
+# 3 = server is running
+
+
+#statusd
+#systemd has a very nice and detailed status command.
+#The default status check remains the status the existing status command.
+#This command is used to show the systemd status for the domino.service.
+#(the systemd command would be: systemctl status domino.service"

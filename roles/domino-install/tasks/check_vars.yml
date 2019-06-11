@@ -1,0 +1,7 @@
+# check_vars.yml
+---
+- name: domino_repository_url should be defined
+  assert:
+    that:
+    - domino_repository_url is defined and domino_repository_url != ''
+    msg: "Set the value of 'domino_repository_url' in the inventory file."

@@ -23,7 +23,7 @@ domserver03.company.com
 [all:vars]
 domino_install_location=/opt/IBM/domino
 #
-domino_repository_url=http://192.168.1.1/domino/9.x/
+repository_url=http://192.168.1.1/domino/9.x/
 domino_version=90010
 domino_bin_file=DOMINO_9.0.1_64_BIT_LIN_XS_EN.tar
 domino_bin_file_sha256=9f5f941ec43ca268197cb1250a2677630789a4efeca73d38d69ebecd7d32870a

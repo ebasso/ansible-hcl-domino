@@ -8,10 +8,9 @@ __dom_notesdata:         "{{ domino_notesdata | default('/domino/notesdata') }}"
 __dom_user:              "{{ domino_user      | default('notes') }}"
 __dom_group:             "{{ domino_group     | default('notes') }}"
 
-__bin_file:              "{{ domino_fp_bin_file | default('domino901FP9_linux64_x86.tar') }}"
-__bin_file_sha256:       "{{ domino_fp_bin_file_sha256 | default('25020ea0640dbf9b8cd98c7ef82a5019e93a86cdc64d27f3ae15d277957bd306') }}"
-__this_version:          "{{ domino_fp_version | default('901FP9') }}"
-__this_fp_version:       "{{ domino_fp_version | default('9') }}"
+__bin_file:              "{{ domino_fp_bin_file | default('DOM_SVR_V10.0.1_FP1_64B_LINUX_EN.tar') }}"
+__bin_file_sha256:       "{{ domino_fp_bin_file_sha256 | default('6f6209bd14814001d52cc3b0af734a3ead119e9f4e97341bf2ebaa3505550aa8') }}"
+__this_version:          "{{ domino_fp_version | default('10.0.1FP1') }}"
 
 __now:                   "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
 __rsp_file:              "{{ __logs_dir }}/domino_fp_install.rsp"

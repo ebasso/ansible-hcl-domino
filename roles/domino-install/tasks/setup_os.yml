@@ -1,18 +1,23 @@
 ---
-- name:           Installing packages
-  yum:            name={{ item }} state=present
-  with_items:
-    - lsof
-    - unzip
-    - tar
-    - wget
-    - glibc.x86_64
-    - libgcc.x86_64
-    - libstdc++.x86_64
-#    - glibc.i686
-#    - libgcc.i686
-#    - libstdc++.i686
-  when:           (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
+- name:           Install pre-requisites Apt
+  apt:
+    name:         ['unzip', 'tar', 'wget']
+    state:        present
+  when:           ansible_os_family == "Debian"
+
+- name:           Install pre-requisites Zypper
+  zypper:
+    name:         ['unzip', 'tar', 'wget','libgtk-2_0-0']
+    state:        present
+  when:           ansible_os_family == "Suse"
+
+- name:           Install pre-requisites Yum
+  yum:
+    name:         ['lsof', 'tar', 'wget','unzip', 'glibc.x86_64', 'libgcc.x86_64','libstdc++.x86_64']
+    state:        present
+  when:
+    - ansible_os_family == "RedHat"
+    - (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Amazon")
 
 - name:           Create domino group
   group:
@@ -27,8 +32,8 @@
 
 - name:           Is limits.conf already changed?
   command:        "egrep {{ __dom_user }} /etc/security/limits.conf"
-  register:      limits_ok
-  ignore_errors: true
+  register:       limits_ok
+  ignore_errors:  true
 
 - name:           Define limits.conf
   lineinfile:
@@ -38,7 +43,7 @@
   with_items:
       - { type: "soft", value: "60000"}
       - { type: "hard", value: "80000"}
-  when:          limits_ok.rc != 0
+  when:           limits_ok.rc != 0
 
 - name:           Create notesdata directory
   file:
