@@ -1,0 +1,57 @@
+---
+# TODO: Verify FPnn and HFnnn
+- name:          Is Product already Installed?
+  command:       "egrep {{ __product_id }} /var/ibm/InstallationManager/installed.xml"
+  register:      version_already_installed
+  ignore_errors: true
+
+#-  debug:       var=version_already_installed
+
+---
+- name:          Cleanup Binaries directory
+  file:          path={{ __tmp_dir }} state=absent
+  ignore_errors: true
+
+- name:          Create Binaries directory
+  file:          path={{ __tmp_dir }} state=directory mode=0755
+
+- name:          Create Logs directory
+  file:          path={{ __logs_dir }} state=directory mode=0755
+
+- name:          Download Verse
+  get_url:
+    url:         "{{ repository_url }}/{{ item.file_name }}"
+    dest:        "{{ __tmp_dir }}/{{ item.file_name }}"
+    mode:        0755
+    checksum:    sha256:{{ item.check_sum }}
+  with_items:    "{{ __this_files }}"
+
+- name:          "Backup Current Verse version"
+  archive:
+    path:        "{{ __dom_notesdata }}/domino/workspace/applications/eclipse/plugins/*-1.0.*-0.0-*.jar"
+    dest:        "{{ __logs_dir }}/verse_bkp_{{ __now }}.tar.gz"
+    remove:      yes
+    format:      gz
+#  ignore_errors: yes
+
+- name:          Extract Verse
+  unarchive:
+    src:         "{{ __tmp_dir }}/{{ item.file_name }}"
+    dest:        "{{ __dom_notesdata }}/domino/workspace/applications"
+    copy:        no
+    creates:     {{ __tmp_dir }}/linux/install
+#    user:       "{{ __dom_user }}"
+#    owner:      "{{ __dom_user }}"
+#    group:      "{{ __dom_group }}"
+  with_items:    "{{ __this_files }}"
+
+- name:          Change Owner 
+  file:
+    path:        "{{ __dom_notesdata }}/domino/workspace/applications"
+    state:       directory
+    group:       "{{ __dom_group }}"
+    #owner:      "{{ domuser }}"
+
+- name:          Cleanup Binaries directory
+  file:          path={{ __tmp_dir }} state=absent
+

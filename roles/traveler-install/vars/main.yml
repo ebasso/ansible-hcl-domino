@@ -1,0 +1,24 @@
+---
+__tmp_dir:               "{{ tmp_dir | default('/opt/Binaries') }}/traveler"
+__logs_dir:              "{{ tmp_dir | default('/opt/Binaries') }}/logs"
+
+__dom_install_location:  "{{ domino_install_location | default('/opt/ibm/domino') }}"
+__dom_notesdata:         "{{ domino_notesdata | default('/domino/notesdata') }}"
+__dom_user:              "{{ domino_user      | default('notes') }}"
+__dom_group:             "{{ domino_group     | default('notes') }}"
+
+__this_version:          "{{ traveler_version | default('10.0.1.1') }}"
+
+__now:                   "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+__rsp_file:              "{{ __logs_dir }}/traveler_install.rsp"
+__log_file:              "{{ __logs_dir }}/traveler_install.{{ __now }}.log"
+__tpl_file:              "traveler_install.rsp.j2"
+__os:                    "{{ ansible_system | lower }}64"
+__os_noarch:             "{{ ansible_system | lower }}"
+
+__enable_systemd:        ""
+
+__curr_ver:              "0"
+__curr_fp:               "0"
+__curr_hf:               "0"
+__new_install:           true

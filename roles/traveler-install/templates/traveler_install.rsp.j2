@@ -1,0 +1,11 @@
+ACCEPT_LICENSE=true
+DOMINO_PROGRAM_DIRECTORY={{ __dom_install_location }}
+
+DOMINO_DATA_DIRECTORY_{{ loop.index }}={{ __dom_notesdata }}
+DOMINO_NOTESINI_DIRECTORY_{{ loop.index }}={{ __dom_notesdata }}
+LINUX_USER_NAME_{{ loop.index }}={{ __dom_user }}
+LINUX_GROUP_NAME_{{ loop.index }}={{ __dom_group }}
+
+NTS_WEBSITE_HOME=0
+OVERRIDE_BACKREV=false
+NTS_SET_EXTERNAL_URL={{ NTS_EXTERNAL_URL }}

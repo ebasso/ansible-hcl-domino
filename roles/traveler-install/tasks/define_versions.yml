@@ -1,0 +1,14 @@
+---
+- name:                Install Domino 10.0.1?
+  set_fact:
+    __bin_file:         "{{ traveler_bin_file | default('TRAVELER_V10.0.1_FP1_FOR_LINUX_ML.tar.gz') }}"
+    __bin_file_sha256:  "{{ traveler_bin_file_sha256 | default('0849f295816d40799ee31a9fc29fb4131db5ce4fa869078450e7a571661aae2a') }}"
+    __bin_version:      1001
+    #__domino_exec_directory: "{{ __dom_install_location }}/notes/10000000/{{ __os_noarch }}"
+  when:                 ( __traveler_version == '10.0.1.1' )
+
+
+
+#rev = "1001FP1"
+#rev = "901FP10"
+#rev = "901FP10HF541"

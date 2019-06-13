@@ -1,0 +1,43 @@
+---
+- name:          Cleanup Binaries directory
+  file:          path={{ __tmp_dir }} state=absent
+  ignore_errors: true
+
+- name:          Create Binaries directory
+  file:          path={{ __tmp_dir }} state=directory mode=0755
+
+- name:          Create Logs directory
+  file:          path={{ __logs_dir }} state=directory mode=0755
+
+- name:          Download Domino Fix Pack
+  get_url:
+    url:         "{{ __repository_url }}/{{ __bin_file }}"
+    dest:        "{{ __tmp_dir }}/{{ __bin_file }}"
+    mode:        0755
+    checksum:    sha256:{{ __bin_file_sha256 }}
+
+- name:          Extract Domino Fix Pack
+  unarchive:
+    src:         "{{ __tmp_dir }}/{{ __bin_file }}"
+    dest:        "{{ __tmp_dir }}/"
+    copy:        no
+    creates:     {{ __tmp_dir }}/linux/install
+
+- name:          Generate Domino FP Install Response file
+  template:
+    src:         "{{ __tpl_file }}"
+    dest:        "{{ __rsp_file }}"
+
+- name:          Install IBM Domino Fix Pack
+  command:
+    chdir={{ __tmp_dir }}
+    {{ __tmp_dir }}/linux/install -script {{ __rsp_file }}"
+  register:      cout
+  changed_when:  ( cout.stdout.find( __version_check ) != -1)
+  #args:
+  #  creates: /opt/ibm/domino/bin/server
+
+#- debug:                msg={{ cout }}
+
+- name:          Cleanup Binaries directory
+  file:          path={{ __tmp_dir }} state=absent

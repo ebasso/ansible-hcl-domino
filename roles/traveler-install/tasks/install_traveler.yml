@@ -1,0 +1,49 @@
+---
+- name:          Cleanup Binaries directory
+  file:          path={{ __tmp_dir }} state=absent
+  ignore_errors: true
+
+- name:          Create Binaries directory
+  file:          path={{ __tmp_dir }} state=directory mode=0755
+
+- name:          Create Logs directory
+  file:          path={{ __logs_dir }} state=directory mode=0755
+
+- name:          Download Traveler
+  get_url:
+    url:         "{{ __repository_url }}/{{ __bin_file }}"
+    dest:        "{{ __tmp_dir }}/{{ __bin_file }}"
+    mode:        0755
+    checksum:    sha256:{{ __bin_file_sha256 }}
+
+- name:          "Extract Traveler"
+  unarchive:
+    src:         "{{ __tmp_dir }}/{{ __bin_file }}"
+    dest:        "{{ __tmp_dir }}/"
+    copy:        no
+    creates:     "{{ __tmp_dir }}/linux/install"
+
+- name:          "Generate Traveler Install Response file"
+  template:
+    src:         "{{ __tpl_file }}"
+    dest:        "{{ __rsp_file }}"
+
+- name:          "Install IBM Traveler"
+  shell:
+    "{{ __tmp_dir }}/traveler ./TravelerSetup -f {{ __rsp_file }} -i SILENT -l en"
+  args:
+    chdir:       "{{ __tmp_dir }}/{{ __os }}/domino"
+    creates:     "{{ __dom_install_location }}/bin/server"
+  register:      cout
+  changed_when:  ( cout.stdout.find( __version_check ) != -1)
+
+#- debug:        msg={{ cout }}
+
+- name:          Cleanup Binaries directory
+  file:          path={{ __tmp_dir }} state=absent
+
+# TRAVELER_STRING_OK="Installation completed with warnings."
+
+#./silentInstall > $INST_TRAVELER_LOG
+
+#  cp /local/notesdata/IBM_TECHNICAL_SUPPORT/traveler/logs/TravelerInstall.log /local

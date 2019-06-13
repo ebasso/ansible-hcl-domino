@@ -1,0 +1,13 @@
+---
+- name:          Check Vars
+  include_tasks: check_vars.yml
+
+- name:          Define Vars
+  include_tasks: define_vars.yml
+
+- name:          Define Domino Versions
+  include_tasks: define_versions.yml
+
+- include:       install_verse.yml
+  #when:          __release < __this_version[0:3]
+  #when:         version_already_installed.rc != 0

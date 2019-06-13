@@ -1,0 +1,21 @@
+---
+- name:          Is Product already Installed?
+  command:       "egrep {{ __product_id }} /var/ibm/InstallationManager/installed.xml"
+  register:      version_already_installed
+  ignore_errors: true
+
+#-  debug:       var=version_already_installed
+# TODO: STOP DOMINO
+- include:       domino-server-stop.yml
+  when:          version_already_installed.rc != 0
+
+- name: Configure Domino data
+  sudo: true
+  sudo_user: "{{ domino_user }}"
+  shell: /opt/ibm/lotus/bin/server -silent {{ domino_installation_path }}/domino.pds
+  args:
+    chdir: "{{ domino_data_path }}"
+    creates: "{{ domino_data_path }}/names.nsf"
+
+- name: Enable and start Domino server
+  service: name=rc_domino state=started enabled=yes

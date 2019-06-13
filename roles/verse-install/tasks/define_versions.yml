@@ -1,0 +1,10 @@
+---
+- name:                Install Domino 10.0.1?
+  set_fact:
+    __bin_file:         "DOM_SVR_V10.0.1_64_BIT_Lnx.tar"
+    __bin_file_sha256:  "57a19f56da492740d50457bcb3eec6f2b5410e8e122608c19e1886cf3fb36515"
+    __bin_version:      1001
+    __verse_directory: "{{ __dom_notesdata }}/domino/workspace/"
+  when:                 ( __verse_version == '1.0.7' )
+
+

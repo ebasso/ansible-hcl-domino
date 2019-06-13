@@ -1,0 +1,7 @@
+---
+__dom_install_location:       "{{ domino_install_location | default('/opt/ibm/domino') }}"
+__dom_notesdata:              "{{ domino_notesdata | default('/domino/notesdata') }}"
+__dom_user:                   "{{ domino_user      | default('notes') }}"
+__dom_group:                  "{{ domino_group     | default('notes') }}"
+
+__now:                        "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"

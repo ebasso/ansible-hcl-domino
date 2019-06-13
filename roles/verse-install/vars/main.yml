@@ -1,0 +1,15 @@
+---
+__tmp_dir:                    "{{ tmp_dir | default('/opt/Binaries') }}/verse"
+__logs_dir:                   "{{ tmp_dir | default('/opt/Binaries') }}/logs"
+
+__dom_install_location:  "{{ domino_install_location | default('/opt/ibm/domino') }}"
+__dom_notesdata:         "{{ domino_notesdata | default('/domino/notesdata') }}"
+__dom_user:              "{{ domino_user      | default('notes') }}"
+__dom_group:             "{{ domino_group     | default('notes') }}"
+
+__verse_version:          "{{ verse_version | default('1.0.7') }}"
+
+
+#__this_files:
+#  - { file_name: IBM_Verse_On_Premises.zip, check_sum: 0808503fae69956ffea5f8ca4d9f994111b35b0af1216fb5464f6483f8700c45 }
+#__this_version:               "{{ verse_version | default('1.0.4') }}"
