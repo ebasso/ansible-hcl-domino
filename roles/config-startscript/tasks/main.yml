@@ -46,3 +46,18 @@
 #The default status check remains the status the existing status command.
 #This command is used to show the systemd status for the domino.service.
 #(the systemd command would be: systemctl status domino.service"
+
+
+#- name:         Script already configured?
+#  command:      "egrep \"{{ __dom_user }}\" /etc/sysconfig/rc_domino_config_{{ __dom_user }}"
+#  register:     startscript_configured
+#  ignore_errors: true
+#
+#
+#- name:         Configure Startup Script
+#  include_tasks: config_startscript.yml
+#  when:         startscript_configured.rc != 0
+
+#chkconfig --add rc_domino
+
+#-  debug:       var=version_already_installed

@@ -5,11 +5,8 @@
 - name:          Define Vars
   include_tasks: define_vars.yml
 
-- include:       check-version.yml
-
-#TODO:           Change this for Domino v10
-- include:       config-os.yml
-  when:          __release < __this_version[0:3]
+- name:          Define Domino Versions
+  include_tasks: define_versions.yml
 
 #- name: TODO:   CHECK IF DOMINO IS RUNNING using lsof
 #  command:      "lsof {{ __dom_install_location }}/bin/server"
@@ -20,6 +17,20 @@
 #- include:      domino-server-stop.yml
 #  when:         __domino_is_running.rc != 0
 
+- name: Print some debug information 
+  vars: 
+    msg: |
+        __curr_ver: {{ __curr_ver }}
+        __curr_fp: {{ __curr_fp }}
+        __curr_hf: {{ __curr_hf }}
+        __bin_version: {{ __bin_version }}
+        __bin_fp_version: {{ __bin_fp_version }}
+        __bin_hf_version: {{ __bin_hf_version }}
+  debug: 
+    msg: "{{ msg.split('\n') }}"       
+  tags: debug_info
+  when: ( __debug_enabled == true )
+
 - include:       install_fp.yml
-  when:          ( __release < __this_version[0:3] ) and (__fp < __this_version[0:3])
-#  when:         (domino_version == __release) and (__this_version != __fp) and ("" != __fp)
+  when:          ( __curr_ver|int == __bin_version ) and ( __curr_fp|int < __bin_fp_version )
+

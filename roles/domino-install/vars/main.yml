@@ -8,15 +8,20 @@ __dom_notesdata:         "{{ domino_notesdata | default('/domino/notesdata') }}"
 __dom_user:              "{{ domino_user      | default('notes') }}"
 __dom_group:             "{{ domino_group     | default('notes') }}"
 
-__bin_file:              "{{ domino_bin_file | default('DOM_SVR_V10.0.1_64_BIT_Lnx.tar') }}"
-__bin_file_sha256:       "{{ domino_bin_file_sha256 | default('57a19f56da492740d50457bcb3eec6f2b5410e8e122608c19e1886cf3fb36515') }}"
-__this_version:          "{{ domino_version | default('10.0.1') }}"
+__domino_version:           "{{ domino_version | default('10.0.1') }}"
 
 __now:                   "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
 __rsp_file:              "{{ __logs_dir }}/domino_install.rsp"
 __log_file:              "{{ __logs_dir }}/domino_install.{{ __now }}.log"
 __tpl_file:              "domino_install.rsp.j2"
 __os:                    "{{ ansible_system | lower }}64"
-
+__os_noarch:             "{{ ansible_system | lower }}"
 
 __enable_systemd:        ""
+
+__curr_ver:       "0"
+__curr_fp:    "0"
+__curr_hf:    "0"
+__new_install:      true
+
+__debug_enabled: true

@@ -1,0 +1,24 @@
+---
+- name:                Install Domino 10.0.1?
+  set_fact:
+    __bin_file:         "DOM_SVR_V10.0.1_64_BIT_Lnx.tar"
+    __bin_file_sha256:  "57a19f56da492740d50457bcb3eec6f2b5410e8e122608c19e1886cf3fb36515"
+    __bin_version:      1001
+    __bin_fp_version:   0
+    __bin_hf_version:   0
+    __domino_exec_directory: "{{ __dom_install_location }}/notes/10000000/{{ __os_noarch }}"
+  when:                 ( __domino_version == '10.0.1' )
+
+- name:                Install Domino 9.0.1?
+  set_fact:
+    __bin_file:        "DOMINO_9.0.1_64_BIT_LIN_XS_EN.tar"
+    __bin_file_sha256: "9f5f941ec43ca268197cb1250a2677630789a4efeca73d38d69ebecd7d32870a"
+    __bin_version:     901
+    __bin_fp_version:   0
+    __bin_hf_version:   0
+    __domino_exec_directory: "{{ __dom_install_location }}/notes/90010/{{ __os_noarch }}"
+  when:                ( __domino_version == '9.0.1' )
+
+#rev = "1001FP1"
+#rev = "901FP10"
+#rev = "901FP10HF541"

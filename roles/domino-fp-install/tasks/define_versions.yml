@@ -1,0 +1,33 @@
+---
+
+- name:                Install Domino 10.0.1FP2?
+  set_fact:
+    __bin_file:        "domino10001FP2_linux64.tar"
+    __bin_file_sha256: "f3573d3f084836a923271967c07a402ce3f3d1f3830dc7a029fa6db6d70c9135"
+    __bin_version:      1001
+    __bin_fp_version:   2
+    __bin_hf_version:   0
+    __domino_exec_directory: "{{ __dom_install_location }}/notes/10000000/{{ __os_noarch }}"
+  when:                 ( __domino_version == '10.0.1' and __domino_fp_version == 'FP2' )
+
+- name:                "Install Domino 10.0.1FP1?"
+  set_fact:
+    __bin_file:        "domino10001FP1_linux64.tar"
+    __bin_file_sha256: "6f6209bd14814001d52cc3b0af734a3ead119e9f4e97341bf2ebaa3505550aa8"
+    __bin_version:      1001
+    __bin_fp_version:   1
+    __bin_hf_version:   0
+    __domino_exec_directory: "{{ __dom_install_location }}/notes/10000000/{{ __os_noarch }}"    
+  when:                 ( __domino_version == '10.0.1' and __domino_fp_version == 'FP1' )
+
+
+- name:               "Install Domino 9.0.1FP10?"
+  set_fact:
+    __bin_file:        "domino901FP10_linux64_x86.tar"
+    __bin_file_sha256: "d0575e4be7d2c78d0b557c99db8bf08e754c52128e076a3ad1a46e85b7f8f2c0"
+    __bin_version:      901
+    __bin_fp_version:   10
+    __bin_hf_version:   0
+    __domino_exec_directory: "{{ __dom_install_location }}/notes/10000000/{{ __os_noarch }}"     
+  when:                 ( __domino_version == '9.0.1' and __domino_fp_version == 'FP10' )
+

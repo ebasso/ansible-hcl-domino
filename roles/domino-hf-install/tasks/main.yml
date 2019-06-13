@@ -5,10 +5,27 @@
 - name:          Define Vars
   include_tasks: define_vars.yml
 
+- name:          Define Domino Versions
+  include_tasks: define_versions.yml
+
 #-  debug:       var=version_already_installed
 # TODO:          STOP DOMINO
 #- include:      domino-server-stop.yml
 #  when:         version_already_installed.rc != 0
 
+- name: Print some debug information 
+  vars: 
+    msg: |
+        __curr_ver: {{ __curr_ver }}
+        __curr_fp: {{ __curr_fp }}
+        __curr_hf: {{ __curr_hf }}
+        __bin_version: {{ __bin_version }}
+        __bin_fp_version: {{ __bin_fp_version }}
+        __bin_hf_version: {{ __bin_hf_version }}
+  debug: 
+    msg: "{{ msg.split('\n') }}"       
+  tags: debug_info
+  when: ( __debug_enabled == true )
+
 - include:       install_hf.yml
-#  when:         version_already_installed.rc != 0
+  when:          ( __curr_ver|int == __bin_version ) and ( __curr_fp|int == __bin_fp_version ) and ( __curr_hf|int < __bin_hf_version )

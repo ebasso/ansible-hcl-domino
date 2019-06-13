@@ -1,0 +1,14 @@
+---
+- name:                Install 901FP10HF48-linux64.tar?
+  set_fact:
+    __bin_file:        "901FP10HF48-linux64.tar"
+    __bin_file_sha256: "7f0f1768b142f01c7ae0b320e2532dd62a785d40034824240d4b5f8d57c481d9"
+    __bin_version:     901
+    __bin_fp_version:  10
+    __bin_hf_version:  48
+    __domino_exec_directory: "{{ __dom_install_location }}/notes/90010/{{ __os_noarch }}"
+  when:                ( __domino_version == '9.0.1' and __domino_fp_version == 'FP10' and __domino_hf_version == 'HF48' )
+
+#rev = "1001FP1"
+#rev = "901FP10"
+#rev = "901FP10HF541"

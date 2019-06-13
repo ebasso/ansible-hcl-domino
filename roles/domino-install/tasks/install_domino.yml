@@ -34,21 +34,18 @@
   args:
     chdir:       "{{ __tmp_dir }}/{{ __os }}/domino"
     creates:     "{{ __dom_install_location }}/bin/server"
+  
+- name:          "Verify Installation"
+  shell:
+    "egrep 'Dominoserver Installation successful' {{ __domino_exec_directory }}/DominoInstall.log"
+  register:      cout
+  changed_when: (cout.rc == 0)
+  ignore_errors: true
 
-#export Notes_ExecDirectory=$LOTUS/notes/latest/linux
-#DOM_STRING_OK="Dominoserver Installation successful"
-#INST_DOM_LOG=/local/install_domino.log
-#mv "$Notes_ExecDirectory/DominoInstall.log" "$INST_DOM_LOG"
-#
-#   check_file_str "$INST_DOM_LOG" "$DOM_STRING_OK"
-#
-#  if [ -e "$CURRENT_FILE" ]; then
-#    CURRENT_RESULT=`grep "$CURRENT_STRING" "$CURRENT_FILE" ` 
-#
-#    if [ -z "$CURRENT_RESULT" ]; then
-#      return 0
-#    else
-#      return 1
+- name:          "Move DominoInstall.log to log directory"
+  shell:
+    "mv {{ __domino_exec_directory }}/DominoInstall.log {{ __logs_dir }}/."
+  ignore_errors: true
 
 - name:          Cleanup Binaries directory
   file:          path={{ __tmp_dir }} state=absent

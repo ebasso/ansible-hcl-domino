@@ -44,6 +44,7 @@ Example of my repository
     |   |   `-- 901FP9HF321.tar
     |   |-- FP10
     |   |   |-- domino901FP10_linux64_x86.tar
+    |   |   |-- 9.0.1FP10HF48.tar
     |   |   `-- 9.0.1FP10HF541.tar
 
 ```
@@ -81,3 +82,14 @@ Change you ansible host file like **hosts_domino**
 cd /etc/ansible
 
 ansible-playbooks -i environments/hosts.development -u <username> -k playbooks/ibm-domino-complete.yml
+```
+
+## Community Support
+Special Thanks go to the following people for having provided valuable input to this project
+
+* Daniel Nashed for his [startscript](https://www.nashcom.de/nshweb/pages/startscript.htm) under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html). 
+
+## License
+
+This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html). 
+

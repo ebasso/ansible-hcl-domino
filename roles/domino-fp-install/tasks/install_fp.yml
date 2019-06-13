@@ -23,21 +23,25 @@
     copy:         no
     creates:      "{{ __tmp_dir }}/{{ __os }}/domino/install"
 
-- name:           Generate Domino FP Install Response file
+- name:           "Generate Domino FP Install Response file"
   template:
     src:          "{{ __tpl_file }}"
     dest:         "{{ __rsp_file }}"
 
-- name:           Install IBM Domino Fix Pack
+- name:           "Install IBM Domino Fix Pack -- This takes a while ..."
   shell:
     "{{ __tmp_dir }}/{{ __os }}/domino/install -script {{ __rsp_file }}"
   args:
     chdir:        "{{ __tmp_dir }}/{{ __os }}/domino"
   environment:
     NUI_NOTESDIR: "{{ __dom_install_location }}"
-#    creates:     "{{ __dom_install_location }}/bin/server"
+  register:       cout
+  changed_when:   ( cout.stdout.find('The installation completed successfully') != -1 )
 
-#- debug:         msg={{ cout }}
+- name:           "Write log to file "
+  copy:
+    content:      "{{ cout.stdout }}"
+    dest:         "{{ __log_file }}"
 
 - name:           Cleanup Binaries directory
   file:           path={{ __tmp_dir }} state=absent

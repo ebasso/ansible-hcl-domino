@@ -7,7 +7,7 @@
 
 - name:           Install pre-requisites Zypper
   zypper:
-    name:         ['unzip', 'tar', 'wget','libgtk-2_0-0']
+    name:         ['unzip', 'tar', 'wget']
     state:        present
   when:           ansible_os_family == "Suse"
 
@@ -28,6 +28,7 @@
   user:
     name:         "{{ __dom_user }}"
     group:        "{{ __dom_group }}"
+    home:         "{{ __dom_notesdata }}"
     state:        present
 
 - name:           Is limits.conf already changed?

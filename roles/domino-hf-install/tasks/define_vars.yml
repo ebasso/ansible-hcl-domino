@@ -4,13 +4,6 @@
   register:            __cout
   ignore_errors:       true
 
-# rc: 2 --> file not exist - domino not installed
-#- name: Set Fact - First Domino Setup?
-#  set_fact:
-#    __curr_ver:  "0"
-#    __new_install:  true
-#  when:          ( __cout.rc == 0  and  __cout.stderr is search('No such file or directory') )
-
 - name: "Set Fact - Domino version"
   set_fact:
     __curr_ver:  "{{ __cout.stdout[0:4]  }}"

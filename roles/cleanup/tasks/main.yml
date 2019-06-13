@@ -1,12 +1,33 @@
-- name: cleanup domino directories
-  shell: |
-    rm -fr /domino/notesdata/*
-    rm -fr /opt/ibm/domino
-    rm -fr /opt/lotus/domino
-    rm /etc/sysconfig/rc_domino_config
-    rm /etc/sysconfig/rc_domino_config_{{ __dom_user }}
+#- name: cleanup domino directories
+#  shell: |
+#    rm -fr /domino
+#    rm -fr /opt/ibm/domino
+#    rm -fr /opt/lotus/domino
+#    rm /etc/sysconfig/rc_domino_config
+#    rm /etc/sysconfig/rc_domino_config_{{ __dom_user }}
+#  ignore_errors:       true
+#
+- name: "Cleanup Binaries directory"
+  file: 
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /domino
+    - /opt/ibm/domino
+    - /opt/lotus/domino
+    - /etc/sysconfig/rc_domino_config
+    - /etc/sysconfig/rc_domino_config_{{ __dom_user }}
+  ignore_errors:       true
 
-- name: delete notes user
-  shell: |
-    userdel notes
-    groupdel notes
+- name:           Delete domino user
+  user:
+    name:         "{{ __dom_user }}"
+    state:        absent
+  ignore_errors:       true
+
+- name:           Delete domino group
+  group:
+    name:         "{{ __dom_group }}"
+    state:        absent
+  ignore_errors:       true
+

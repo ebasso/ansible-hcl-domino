@@ -5,27 +5,31 @@
 - name:          Define Vars
   include_tasks: define_vars.yml
 
+- name:          Define Domino Versions
+  include_tasks: define_versions.yml
+
 - name:          Setup OS
   include_tasks: setup_os.yml
-  when:          first_time_setup.stat.exists != true
+  when:          ( __new_install == true )
 
 #- include:      domino-server-stop
 #  when:          first_time_setup.stat.exists != true
 #  when:         __release < __this_version[0:3]
 
+- name: Print some debug information 
+  vars: 
+    msg: |
+        __curr_ver: {{ __curr_ver }}
+        __curr_fp: {{ __curr_fp }}
+        __curr_hf: {{ __curr_hf }}
+        __bin_version: {{ __bin_version }}
+        __bin_fp_version: {{ __bin_fp_version }}
+        __bin_hf_version: {{ __bin_hf_version }}
+  debug: 
+    msg: "{{ msg.split('\n') }}"       
+  tags: debug_info
+  when: ( __debug_enabled == true )
+
 - include:       install_domino.yml
-  when:          __release < __this_version[0:3]
-  #when:         version_already_installed.rc != 0
+  when:          ( __curr_ver|int < __bin_version )
 
-#- name:         Script already configured?
-#  command:      "egrep \"{{ __dom_user }}\" /etc/sysconfig/rc_domino_config_{{ __dom_user }}"
-#  register:     startscript_configured
-#  ignore_errors: true
-#
-#- name:         Configure Startup Script
-#  include_tasks: config_startscript.yml
-#  when:         startscript_configured.rc != 0
-
-#chkconfig --add rc_domino
-
-#-  debug:       var=version_already_installed

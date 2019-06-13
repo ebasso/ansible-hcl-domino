@@ -2,24 +2,23 @@
 #
 # Variables used in this playbook that can be setup at hosts file.
 #
-# HTTP server that has installation Files
-#   repository_url:      http://192.168.1.1/
 #
 ---
 - hosts:                        domino_servers
   become:                       true
+  #serial:                       2
   roles:
     - domino-install
-    #- domino-fp-install 
-    #- domino-hf-install
-#   - { roles: domino-lp-install
+#    - config-startscript
+    - domino-fp-install 
+    - domino-hf-install
+#   - domino-lp-install
 #   - { role/verse-install , when: "domino_not_running == true" }
 #   - roles/domino-start-server
-
-vars:
-  #tmp_dir:                   "/opt/Binaries/domino"
-  #domino_install_location:   "/opt/ibm/domino"
-  #domino_notesdata:          "/domino/notesdata"
-  #domino_group:              "notes"
-  #domino_user:               "notes"
-  #domino_version:            "901FP10"
+  vars:
+    #tmp_dir:                   "/opt/Binaries"
+    #domino_install_location:   "/opt/ibm/domino"
+    domino_notesdata:          "/domino/notesdata"
+    #domino_group:              "notes"
+    #domino_user:               "notes"
+    #domino_version:            "901FP10"
