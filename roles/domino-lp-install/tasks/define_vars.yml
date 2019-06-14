@@ -1,0 +1,14 @@
+---
+
+- name:                Install pt_br?
+  set_fact:
+    __dat_file:        "Brazilian.dat"
+    __bin_file:        "DOMINO_9.0.1_LP_AIX_Lix_BP.tar"
+    __bin_file_sha256: "9b1ba1c9e29e186a13db507835643cf30e8555e543d784d4721dc5272ab5cd18"
+    __lp_jars:         "DomLP901_Suite.jar:DomLP901_pt_BR.jar"
+  when:   ( __language == 'pt_br' ) and ( __lp_version == '9.0.1')
+
+- name:          Is LP already Installed?
+  stat:
+    path:        "{{ __dom_notesdata }}/domino/html/download/filesets/{{ __dat_file }}.dat"
+    register:    version_already_installed

@@ -1,27 +1,27 @@
 ---
-- name:          Cleanup Binaries directory
+- name:          "Cleanup Binaries directory"
   file:          path={{ __tmp_dir }} state=absent
   ignore_errors: true
 
-- name:          Create Binaries directory
+- name:          "Create Binaries directory"
   file:          path={{ __tmp_dir }} state=directory mode=0755
 
-- name:          Create Logs directory
+- name:          "Create Logs directory"
   file:          path={{ __logs_dir }} state=directory mode=0755
 
-- name:          Download Domino Hot Fix
+- name:          "Download Domino Language Pack"
   get_url:
     url:         "{{ __repository_url }}/{{ __bin_file }}"
     dest:        "{{ __tmp_dir }}/{{ __bin_file }}"
     mode:        0755
     checksum:    sha256:{{ __bin_file_sha256 }}
 
-- name:          Extract Domino Language Pack
+- name:          "Extract Domino Language Pack"
   unarchive:
     src:         "{{ __tmp_dir }}/{{ __bin_file }}"
     dest:        "{{ __tmp_dir }}/"
     copy:        no
-    creates:     {{ __tmp_dir }}/linux/install
+    creates:     "{{ __tmp_dir }}/linux/install"
 
 - name:          Generate Domino Language Pack Install Response file
   template:
@@ -29,16 +29,16 @@
     dest:        "{{ __rsp_file }}"
 
 - name:          Install IBM Domino Language Pack
-  command:
-    chdir={{ __tmp_dir }}
-    {{ __tmp_dir }}/linux/install -script {{ __rsp_file }}"
-    chdir="{{ __tmp_dir }}/CITI7BP" {{ domino_install_location }}/java -cp DomLP901_Suite.jar:DomLP901_pt_BR.jar run -silent -G licenseAccepted=true -W cmd.silent="{{ __tmp_dir }}/LPSilent.ini"
+  shell:
+    "{{ __tmp_dir }}/linux/install -script {{ __rsp_file }}"
+  args:
+    chdir:       "{{ __tmp_dir }}/{{ __os }}/domino"
   register:      cout
   changed_when:  ( cout.stdout.find( __version_check ) != -1)
   #args:
   #  creates: /opt/ibm/domino/bin/server
+# chdir="{{ __tmp_dir }}/CITI7BP" {{ domino_install_location }}/java -cp {{ __lp_jars }} run -silent -G licenseAccepted=true -W cmd.silent="{{ __tmp_dir }}/LPSilent.ini"  
 
-#- debug:                msg={{ cout }}
 
 - name:          Cleanup Binaries directory
   file:          path={{ __tmp_dir }} state=absent

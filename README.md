@@ -12,11 +12,12 @@ Ansible playbooks for IBM Domino, Traveler, ...
 
 | Role name                       |            Description of Role                                          |
 |---------------------------------|-------------------------------------------------------------------------|
+| clenaup                         | Delete all environment, used for development |
+| config-startscript              | Configure Startup Script |
 | domino-install                  | Install IBM Domino Server   |
 | domino-fp-install               | Install IBM Domino Server Fix Pack  |
 | domino-hf-install               | Install IBM Domino Server Hot Fix  |
 | domino-lp-install               | DRAFT - Install Language pack |
-| clenaup                         | Delete all environment, used for development |
 | domino-server-stop              | DRAFT - Stop Domino server |
 | domino-setup                    | DRAFT - Configure IBM Domino Server   |
 | traveler-install                | DRAFT - Install traveler server   |

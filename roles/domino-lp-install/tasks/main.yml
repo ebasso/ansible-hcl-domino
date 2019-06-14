@@ -1,24 +1,15 @@
 ---
-# TODO:          Verify FPnn and HFnnn
-- name:          Is Product already Installed?
-  command:       "egrep {{ __product_id }} /var/ibm/InstallationManager/installed.xml"
-  register:      version_already_installed
-  ignore_errors: true
+- name:          Check Vars
+  include_tasks: check_vars.yml
 
-- name:          Check if LP is installed
-  stat:
-    path:        "{{item}}/domino/html/download/filesets/Brazilian.dat"
-    register:    stat_result
-  with_items:
-    - "{{domdir}}"
-
-#-  debug:       var=version_already_installed
-# TODO:          STOP DOMINO
-- include:       domino-server-stop.yml
-  when:          version_already_installed.rc != 0
+- name:          Define Vars
+  include_tasks: define_vars.yml
+  
+#- include:       domino-server-stop.yml
+#  when:          version_already_installed.rc != 0
 
 - include:       inst-domino-lp.yml
   when:          version_already_installed.rc != 0
 
-- include:       domino-server-start.yml
-  when:          version_already_installed.rc != 0
+#- include:       domino-server-start.yml
+#  when:          version_already_installed.rc != 0

@@ -1,10 +1,14 @@
 ---
-- name:                Install Domino 10.0.1?
+- name:                "Install Verse 1.0.7?"
   set_fact:
     __bin_file:         "DOM_SVR_V10.0.1_64_BIT_Lnx.tar"
-    __bin_file_sha256:  "57a19f56da492740d50457bcb3eec6f2b5410e8e122608c19e1886cf3fb36515"
-    __bin_version:      1001
-    __verse_directory: "{{ __dom_notesdata }}/domino/workspace/"
+    __bin_file_sha256:  "0808503fae69956ffea5f8ca4d9f994111b35b0af1216fb5464f6483f8700c45"
+    __bin_version:      1
+    __bin_fp_version:   0
+    __bin_hf_version:   7
   when:                 ( __verse_version == '1.0.7' )
 
 
+#__this_files:
+#  - { file_name: IBM_Verse_On_Premises.zip, check_sum: 0808503fae69956ffea5f8ca4d9f994111b35b0af1216fb5464f6483f8700c45 }
+#__this_version:               "{{ verse_version | default('1.0.4') }}"

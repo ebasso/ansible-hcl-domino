@@ -9,5 +9,4 @@
   include_tasks: define_versions.yml
 
 - include:       install_verse.yml
-  #when:          __release < __this_version[0:3]
-  #when:         version_already_installed.rc != 0
+  #when:          ( __curr_ver|int == __bin_version ) and ( __curr_fp|int == __bin_fp_version ) and ( __curr_hf|int < __bin_hf_version )

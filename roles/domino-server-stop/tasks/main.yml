@@ -8,18 +8,9 @@
 #  FOUND_TARGETS=`lsof | awk '{print $9}' | grep "$TARGET_REAL_BIN"`
 
 - name:                 "Stop Domino"
-  command:              "service rc_domino stop"
+  shell:                "su - {{ __dom_user }} \"cd {{ __dom_notesdata }} & {{ __dom_install_location }}/bin/server -c 'stop task http' \" "
   register:             cout
   changed_when:         cout.rc == 0
   #changed_when:        ( start.stdout.find('open for e-business') != -1)
   when:                 domino_is_running.rc == 0
 
-
-
-#systemctl start domino.service
-#systemctl stop domino.service
-#systemctl status domino.service
-
-#when:           (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
-
-#RH7 CENTOS SLES12

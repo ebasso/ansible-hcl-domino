@@ -1,0 +1,22 @@
+# define_vars.yml
+---
+- name:          Is Product already Installed?
+  command:       "egrep {{ __product_id }} /var/ibm/InstallationManager/installed.xml"
+  register:      version_already_installed
+  ignore_errors: true
+
+#-  debug:       var=version_already_installed
+
+- name: "Set Fact - Domino version"
+  set_fact:
+    __curr_ver:  "{{ __cout.stdout[0:4]  }}"
+    __new_install:  false
+  when:          (__cout.rc == 0 and __cout.stdout != "") 
+
+- name: "Set Fact - Domino FP version"
+  set_fact:
+    __curr_ver:    "{{ __cout.stdout | regex_replace('(\\d*).(\\d*).(\\d*)','\\1')  }}"
+    __curr_fp:     "{{ __cout.stdout | regex_replace('(\\d*).(\\d*).(\\d*)','\\2')  }}"
+    __curr_hf:     "{{ __cout.stdout | regex_replace('(\\d*).(\\d*).(\\d*)','\\3')  }}"
+    __new_install:  false
+  when:          (__cout.rc == 0 and __cout.stdout.find('FP') != -1 ) 

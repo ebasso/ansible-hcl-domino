@@ -1,0 +1,13 @@
+# Install Domino Servers
+#
+# Variables used in this playbook that can be setup at hosts file.
+#
+#
+---
+- hosts:                        domino_servers
+  become:                       true
+  #serial:                       2
+  roles:
+#   - domino-stop-http
+#   - { role/verse-install , when: "domino_not_running == true" }
+#   - roles/domino-start-http
