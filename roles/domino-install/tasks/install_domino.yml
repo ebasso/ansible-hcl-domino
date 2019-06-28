@@ -34,7 +34,7 @@
   args:
     chdir:       "{{ __tmp_dir }}/{{ __os }}/domino"
     creates:     "{{ __dom_install_location }}/bin/server"
-  
+
 - name:          "Verify Installation"
   shell:
     "egrep 'Dominoserver Installation successful' {{ __domino_exec_directory }}/DominoInstall.log"

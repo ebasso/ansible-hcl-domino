@@ -1,0 +1,18 @@
+# Install Domino Servers
+#
+# Variables used in this playbook that can be setup at hosts file.
+#
+#
+---
+- hosts:                        domino_servers
+  become:                       true
+  #serial:                       2
+  roles:
+    - domino-fp-install
+  vars:
+    #tmp_dir:                   "/opt/Binaries"
+    #domino_install_location:   "/opt/ibm/domino"
+    domino_notesdata:          "/domino/notesdata"
+    #domino_group:              "notes"
+    #domino_user:               "notes"
+    #domino_version:            "901FP10"

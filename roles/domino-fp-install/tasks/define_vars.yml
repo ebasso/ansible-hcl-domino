@@ -4,34 +4,33 @@
   register:            __cout
   ignore_errors:       true
 
-# rc: 2 --> file not exist - domino not installed
-#- name: Set Fact - First Domino Setup?
-#  set_fact:
-#    __curr_ver:  "0"
-#    __new_install:  true
-#  when:          ( __cout.rc == 0  and  __cout.stderr is search('No such file or directory') )
+#- debug:               var=__cout
 
 - name: "Set Fact - Domino version"
   set_fact:
     __curr_ver:  "{{ __cout.stdout[0:4]  }}"
     __new_install:  false
-  when:          (__cout.rc == 0 and __cout.stdout != "") 
+  when:          (__cout.rc == 0 and __cout.stdout != "")
+
+- name: "Set Fact - Domino 10"
+  set_fact:
+    __curr_ver:  "1001"
+  when:          (__curr_ver == '1000' )
 
 - name: "Set Fact - Domino 9"
   set_fact:
     __curr_ver:  "901"
-  when:          (__curr_ver[0:3] == '900' ) 
+  when:          (__curr_ver[0:3] == '900' )
 
 - name: "Set Fact - Domino FP version"
   set_fact:
     __curr_ver:        "{{ __cout.stdout | regex_replace('(\\d*)FP.*','\\1')  }}"
     __curr_fp:     "{{ __cout.stdout | regex_replace('.*FP(\\d*)','\\1')  }}"
     __new_install:  false
-  when:          (__cout.rc == 0 and __cout.stdout.find('FP') != -1 ) 
+  when:          (__cout.rc == 0 and __cout.stdout.find('FP') != -1 )
 
 - name: "Set Fact - Domino HF version"
   set_fact:
     __curr_hf:    "{{ __cout.stdout | regex_replace('.*HF(\\d*)','\\1')  }}"
     __new_install:  false
-  when:          (__cout.rc == 0 and __cout.stdout.find('HF') != -1 ) 
-
+  when:          (__cout.rc == 0 and __cout.stdout.find('HF') != -1 )
